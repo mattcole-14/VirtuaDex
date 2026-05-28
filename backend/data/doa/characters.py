@@ -14,16 +14,17 @@ doa_characters = [
         "fighting_style": "Mugen Tenshin Ninjutsu",
         "difficulty": "Advanced",
         "description": "Ayane uses evasive spinning movement, tricky angles, and strong keep-out attacks.",
-        "image_url": None,
+        "image_url": "/images/doa/ayane.png",
         "model_url": None,
     },
+
     {
         "id": 3,
         "name": "Hayate",
         "fighting_style": "Mugen Tenshin Ninjutsu",
         "difficulty": "Intermediate",
         "description": "Hayate is a well-rounded ninja with strong mobility, solid pokes, and high-damage options.",
-        "image_url": None,
+        "image_url": "/images/doa/hayate.png",
         "model_url": None,
     },
     {
@@ -32,7 +33,7 @@ doa_characters = [
         "fighting_style": "Hayabusa Ninjutsu",
         "difficulty": "Advanced",
         "description": "Ryu Hayabusa is a powerful ninja with dangerous throws, teleport-style attacks, and high damage.",
-        "image_url": None,
+        "image_url": "/images/doa/hayabusa.png",
         "model_url": None,
     },
     {
@@ -41,7 +42,7 @@ doa_characters = [
         "fighting_style": "Karate",
         "difficulty": "Beginner",
         "description": "Hitomi is a straightforward striker with strong fundamentals, clean pokes, and reliable pressure.",
-        "image_url": None,
+        "image_url": "/images/doa/hitomi.png",
         "model_url": None,
     },
     {
@@ -50,7 +51,7 @@ doa_characters = [
         "fighting_style": "T'ai Chi Quan",
         "difficulty": "Intermediate",
         "description": "Leifang specializes in defensive holds, parries, and counter-based momentum shifts.",
-        "image_url": None,
+        "image_url": "/images/doa/leifang.png",
         "model_url": None,
     },
     {
@@ -59,7 +60,7 @@ doa_characters = [
         "fighting_style": "Pro Wrestling",
         "difficulty": "Intermediate",
         "description": "Tina is a grappler who uses powerful throws, strikes, and wrestling-based pressure.",
-        "image_url": None,
+        "image_url": "/images/doa/tina.png",
         "model_url": None,
     },
     {
@@ -68,7 +69,7 @@ doa_characters = [
         "fighting_style": "Pro Wrestling",
         "difficulty": "Advanced",
         "description": "Bass is a heavy grappler with huge throw damage, strong punishment, and slow but powerful attacks.",
-        "image_url": None,
+        "image_url": "/images/doa/bass.png",
         "model_url": None,
     },
     {
@@ -77,7 +78,7 @@ doa_characters = [
         "fighting_style": "Jeet Kune Do",
         "difficulty": "Intermediate",
         "description": "Jann Lee is an aggressive striker with strong kicks, pressure, and high-damage launchers.",
-        "image_url": None,
+        "image_url": "/images/doa/jann.png",
         "model_url": None,
     },
     {
@@ -86,7 +87,7 @@ doa_characters = [
         "fighting_style": "Muay Thai",
         "difficulty": "Intermediate",
         "description": "Zack uses unpredictable rhythm, flashy movement, and Muay Thai-based offense.",
-        "image_url": None,
+        "image_url": "/images/doa/zack.png",
         "model_url": None,
     },
     {
@@ -95,7 +96,7 @@ doa_characters = [
         "fighting_style": "Pi Gua Quan",
         "difficulty": "Advanced",
         "description": "Helena uses evasive stance transitions, tricky lows, and fluid pressure.",
-        "image_url": None,
+        "image_url": "/images/doa/helena.png",
         "model_url": None,
     },
     {
@@ -104,7 +105,7 @@ doa_characters = [
         "fighting_style": "Ba Ji Quan",
         "difficulty": "Intermediate",
         "description": "Kokoro uses strong linear strikes, pressure strings, and powerful close-range offense.",
-        "image_url": None,
+        "image_url": "/images/doa/kokoro.png",
         "model_url": None,
     },
     {
@@ -113,7 +114,7 @@ doa_characters = [
         "fighting_style": "Lucha Libre",
         "difficulty": "Intermediate",
         "description": "Lisa is a mobile wrestler with acrobatic attacks, throws, and movement-heavy offense.",
-        "image_url": None,
+        "image_url": "/images/doa/lisa.png",
         "model_url": None,
     },
     {
@@ -122,7 +123,7 @@ doa_characters = [
         "fighting_style": "She Quan",
         "difficulty": "Advanced",
         "description": "Christie uses fast evasive movement, slippery offense, and pressure from unusual angles.",
-        "image_url": None,
+        "image_url": "/images/doa/christie.png",
         "model_url": None,
     },
     {
@@ -131,7 +132,7 @@ doa_characters = [
         "fighting_style": "Zui Quan",
         "difficulty": "Advanced",
         "description": "Brad Wong uses drunken boxing, stance transitions, and unpredictable movement.",
-        "image_url": None,
+        "image_url": "/images/doa/brad.png",
         "model_url": None,
     },
     {
@@ -140,7 +141,7 @@ doa_characters = [
         "fighting_style": "Xing Yi Quan",
         "difficulty": "Intermediate",
         "description": "Eliot uses traditional Chinese martial arts with precise strikes and strong close-range tools.",
-        "image_url": None,
+        "image_url": "/images/doa/eliot.png",
         "model_url": None,
     },
     {
@@ -149,7 +150,7 @@ doa_characters = [
         "fighting_style": "Sambo",
         "difficulty": "Advanced",
         "description": "Bayman is a defensive grappler with holds, counters, and strong punishment.",
-        "image_url": None,
+        "image_url": "/images/doa/bayman.png",
         "model_url": None,
     },
     {
@@ -158,7 +159,7 @@ doa_characters = [
         "fighting_style": "MMA",
         "difficulty": "Beginner",
         "description": "Mila uses mixed martial arts, takedowns, strikes, and strong close-range pressure.",
-        "image_url": None,
+        "image_url": "/images/doa/mila.png",
         "model_url": None,
     },
     {
@@ -167,7 +168,7 @@ doa_characters = [
         "fighting_style": "Taekwondo",
         "difficulty": "Intermediate",
         "description": "Rig uses kick-heavy offense, stance pressure, and strong mix-up tools.",
-        "image_url": None,
+        "image_url": "/images/doa/rig.png",
         "model_url": None,
     },
     {
@@ -176,7 +177,7 @@ doa_characters = [
         "fighting_style": "Aiki-Jujutsu / Hayabusa Ninjutsu",
         "difficulty": "Intermediate",
         "description": "Momiji uses graceful movement, quick strikes, and aerial-style offense.",
-        "image_url": None,
+        "image_url": "/images/doa/momiji.png",
         "model_url": None,
     },
     {
@@ -185,7 +186,7 @@ doa_characters = [
         "fighting_style": "Systema",
         "difficulty": "Beginner",
         "description": "Marie Rose is a small, agile fighter with quick strikes, evasive movement, and strong hold-based momentum shifts.",
-        "image_url": None,
+        "image_url": "/images/doa/marie.png",
         "model_url": None,
     },
     {
@@ -194,7 +195,7 @@ doa_characters = [
         "fighting_style": "Honoka Fu",
         "difficulty": "Beginner",
         "description": "Honoka uses a mixed style inspired by several fighters, giving her a flexible and unusual move set.",
-        "image_url": None,
+        "image_url": "/images/doa/honoka.png",
         "model_url": None,
     },
     {
@@ -203,7 +204,7 @@ doa_characters = [
         "fighting_style": "Tengu-do",
         "difficulty": "Advanced",
         "description": "Nyotengu uses powerful strikes, flight-based movement, and unusual spacing tools.",
-        "image_url": None,
+        "image_url": "/images/doa/nyotengu.png",
         "model_url": None,
     },
     {
@@ -212,7 +213,7 @@ doa_characters = [
         "fighting_style": "Mugen Tenshin Ninjutsu",
         "difficulty": "Advanced",
         "description": "Phase 4 is a technical ninja with teleport-style cancels, fast offense, and high execution demands.",
-        "image_url": None,
+        "image_url": "/images/doa/phase.png",
         "model_url": None,
     },
     {
@@ -221,7 +222,7 @@ doa_characters = [
         "fighting_style": "Mugen Tenshin Ninjutsu",
         "difficulty": "Advanced",
         "description": "Raidou is a powerful fighter with copied techniques, heavy attacks, and strong punishment.",
-        "image_url": None,
+        "image_url": "/images/doa/raidou.png",
         "model_url": None,
     },
     {
@@ -230,7 +231,7 @@ doa_characters = [
         "fighting_style": "Fiend Hunter Combat",
         "difficulty": "Intermediate",
         "description": "Rachel is a heavy-hitting fighter with strong damage, throws, and pressure tools.",
-        "image_url": None,
+        "image_url": "/images/doa/rachel.png"   ,
         "model_url": None,
     },
     {
@@ -239,7 +240,7 @@ doa_characters = [
         "fighting_style": "Ii Style Leg Arts",
         "difficulty": "Intermediate",
         "description": "Naotora uses kick-focused offense, pressure strings, and fast advancing attacks.",
-        "image_url": None,
+        "image_url": "/images/doa/naotora.png",
         "model_url": None,
     },
     {
@@ -248,7 +249,7 @@ doa_characters = [
         "fighting_style": "Shiranui-ryuu Ninjutsu",
         "difficulty": "Intermediate",
         "description": "Mai uses fan-based attacks, quick movement, and offense inspired by The King of Fighters.",
-        "image_url": None,
+        "image_url": "/images/doa/mai.png",
         "model_url": None,
     },
     {
@@ -257,7 +258,7 @@ doa_characters = [
         "fighting_style": "Anti-K' Arts",
         "difficulty": "Intermediate",
         "description": "Kula uses ice-themed attacks, quick movement, and crossover-style offense.",
-        "image_url": None,
+        "image_url": "/images/doa/kula.png",
         "model_url": None,
     },
     {
@@ -266,7 +267,7 @@ doa_characters = [
         "fighting_style": "Pencak Silat",
         "difficulty": "Intermediate",
         "description": "NiCO uses fast strikes, electric attacks, and compact movement-based pressure.",
-        "image_url": None,
+        "image_url": "/images/doa/nico.png",
         "model_url": None,
     },
     {
@@ -275,7 +276,7 @@ doa_characters = [
         "fighting_style": "Street Fighting",
         "difficulty": "Beginner",
         "description": "Diego uses direct street fighting, strong punches, and simple but effective offense.",
-        "image_url": None,
+        "image_url": "/images/doa/diego.png",
         "model_url": None,
     },
     {
@@ -284,7 +285,7 @@ doa_characters = [
         "fighting_style": "Aikido",
         "difficulty": "Intermediate",
         "description": "Tamaki uses aikido-inspired movement, holds, and elegant counter-based offense.",
-        "image_url": None,
+        "image_url": "/images/doa/tamaki.png",
         "model_url": None,
     },
 ]
