@@ -21,3 +21,17 @@ frontend/dist/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Python
+backend/__pycache__/
+backend/*.pyc
+
+# Build/cache
+frontend/.vite/
+
+# Local config
+.env.local
