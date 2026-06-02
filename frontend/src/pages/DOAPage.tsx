@@ -85,7 +85,7 @@ function DOAPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8002/games/doa/characters")
+    fetch("http://127.0.0.1:8000/games/doa/characters")
       .then((res) => res.json())
       .then((data) => setCharacters(data))
       .catch(() => setError("Could not load DOA characters. Is the backend running?"));

@@ -1,0 +1,18 @@
+.input-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.input-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+.input-text {
+  color: #e5e7eb;
+  font-size: 0.9rem;
+}

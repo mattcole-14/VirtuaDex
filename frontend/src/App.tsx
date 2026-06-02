@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 
-import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
 import VF5Page from "./pages/VF5Page";
 import CharacterPage from "./pages/CharacterPage";
@@ -9,12 +8,9 @@ import ComingSoonPage from "./pages/ComingSoonPage";
 import CharacterDetailPage from "./pages/CharacterDetailPage";
 import DOAPage from "./pages/DOAPage";
 
-
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
-
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/games/vf5" element={<VF5Page />} />

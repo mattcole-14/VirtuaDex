@@ -59,7 +59,7 @@ function VF5Page() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8002/games/vf5/characters")
+    fetch("http://127.0.0.1:8000/games/vf5/characters")
       .then((response) => response.json())
       .then((data) => setCharacters(data))
       .catch(() =>

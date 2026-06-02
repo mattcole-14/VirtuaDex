@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useMatch, useParams } from "react-router-dom";
 import "./CharacterPage.css";
 import aoiImg from "../assets/image/vf/aoi.png";
-import InputDisplay from "../components/InputDisplay";
+import InputIcons from "../components/InputIcons";
 
 const aoiMoveTabs = [
   { label: "Normal", value: "normal" },
@@ -247,7 +247,7 @@ function CharacterPage() {
                   <tr key={move.id}>
                     <td>{move.name}</td>
                     <td>
-                      <InputDisplay input={move.input} />
+                      <InputIcons input={move.input ?? ""} />
                     </td>
                     <td>{move.hit_level ?? "-"}</td>
                     <td>{move.damage ?? "-"}</td>
