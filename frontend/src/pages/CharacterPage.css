@@ -2,15 +2,22 @@
   min-height: 100vh;
   padding: 3rem 2rem 4rem;
   color: white;
-  background:
-    radial-gradient(circle at top left, rgba(160, 25, 35, 0.2), transparent 32%),
-    radial-gradient(circle at bottom right, rgba(30, 90, 170, 0.18), transparent 35%),
-    linear-gradient(135deg, #080b12 0%, #111827 52%, #07090f 100%);
+
+  background-size: 100% auto;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-color: #07090f;
+
+  position: relative;
+  overflow-x: hidden;
 }
 
 .character-page-inner {
   max-width: 1250px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .character-back-link {
@@ -69,15 +76,50 @@
   height: 430px;
   display: grid;
   place-items: center;
+  padding: 0.8rem;
   transform-style: preserve-3d;
   animation: character-spin 9s linear infinite;
 }
 
-.aoi-render {
-  max-height: 100%;
-  max-width: 100%;
+.character-render-img {
+  max-height: 92%;
+  max-width: 82%;
+  width: auto;
+  height: auto;
   object-fit: contain;
   filter: drop-shadow(0 26px 45px rgba(0, 0, 0, 0.65));
+}
+
+.aoi-zoom {
+  max-height: 100%;
+  max-width: 95%;
+  transform: scale(1.08);
+}
+
+.character-eileen {
+  transform: translateY(-10%) scale(1.02);
+}
+
+.character-jacky,
+.character-lau,
+.character-kage,
+.character-vanessa,
+.character-sarah,
+.character-lei,
+.character-dural,
+.character-blaze,
+.character-goh,
+.character-brad {
+  max-height: 88%;
+  max-width: 78%;
+}
+
+.character-lau,
+.character-kage,
+.character-vanessa,
+.character-sarah,
+.character-lei {
+  transform: translateY(-4%);
 }
 
 .character-render-label {

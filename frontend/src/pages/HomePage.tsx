@@ -30,7 +30,7 @@ const games = [
     title: "Dead or Alive",
     logo: doaLogo,
     subtitle: "Fast strikes, holds, throws, and momentum-based 3D combat.",
-    status: "Available",
+    status: "Coming Soon",
     path: "/games/doa",
   },
   {

@@ -1,8 +1,74 @@
 import { useEffect, useState } from "react";
 import { Link, useMatch, useParams } from "react-router-dom";
 import "./CharacterPage.css";
+import akiraImg from "../assets/image/vf/akira.png";
 import aoiImg from "../assets/image/vf/aoi.png";
+import blazeImg from "../assets/image/vf/blaze.png";
+import bradImg from "../assets/image/vf/brad.png";
+import duralImg from "../assets/image/vf/dural.png";
+import eileenImg from "../assets/image/vf/eileen.png";
+import gohImg from "../assets/image/vf/goh.png";
+import jackyImg from "../assets/image/vf/jacky.png";
+import jeanImg from "../assets/image/vf/jean.png";
+import jeffryImg from "../assets/image/vf/jeffry.png";
+import kageImg from "../assets/image/vf/kage.png";
+import leiImg from "../assets/image/vf/lei.png";
+import lionImg from "../assets/image/vf/lion.png";
+import paiImg from "../assets/image/vf/pai.png";
+import sarahImg from "../assets/image/vf/sarah.png";
+import shunImg from "../assets/image/vf/shun.png";
+import takaImg from "../assets/image/vf/taka.png";
+import vanessaImg from "../assets/image/vf/vanessa.png";
+import wolfImg from "../assets/image/vf/wolf.png";
+import lauImg from "../assets/image/vf/lau.png";
 import InputIcons from "../components/InputIcons";
+import vf5Bg from "../assets/vfchbg.png";
+import doaBg from "../assets/doachbg.png";
+
+
+const gameBackgrounds: Record<string, string> = {
+  vf5: vf5Bg,
+  doa: doaBg,
+};
+
+const vf5CharacterImages: Record<number, string> = {
+  1: akiraImg,
+  2: aoiImg,
+  3: jeanImg,
+  4: eileenImg,
+  5: jackyImg,
+  6: paiImg,
+  7: lauImg,
+  8: wolfImg,
+  9: jeffryImg,
+  10: kageImg,
+  11: sarahImg,
+  12: shunImg,
+  13: lionImg,
+  14: leiImg,
+  15: vanessaImg,
+  16: bradImg,
+  17: gohImg,
+  18: blazeImg,
+  19: takaImg,
+  20: duralImg,
+};
+
+const vf5CharacterClasses: Record<number, string> = {
+  2: "aoi-zoom",
+  4: "character-eileen",
+  5: "character-jacky",
+  7: "character-lau",
+  10: "character-kage",
+  11: "character-sarah",
+  14: "character-lei",
+  15: "character-vanessa",
+  16: "character-brad",
+  17: "character-goh",
+  18: "character-blaze",
+  20: "character-dural",
+};
+
 
 const aoiMoveTabs = [
   { label: "Normal", value: "normal" },
@@ -44,6 +110,7 @@ function CharacterPage() {
   const match = useMatch("/games/:gameId/characters/:characterId");
   const gameId = match?.params.gameId ?? "vf5";
   const isVf5 = gameId === "vf5";
+  const pageBg = gameBackgrounds[gameId] ?? vf5Bg;
 
   const [character, setCharacter] = useState<Character | null>(null);
   const [moves, setMoves] = useState<Move[]>([]);
@@ -121,7 +188,10 @@ function CharacterPage() {
 
   if (error) {
     return (
-      <main className="character-page">
+      <main
+  className="character-page"
+  style={{ backgroundImage: `url(${pageBg})` }}
+>
         <div className="character-page-inner">
           <Link to={`/games/${gameId}`} className="character-back-link">
             ← Back to {gameId.toUpperCase()} roster
@@ -133,11 +203,21 @@ function CharacterPage() {
   }
 
   if (!character) {
-    return <main>Loading character...</main>;
+          return (
+        <main
+          className="character-page"
+          style={{ backgroundImage: `url(${pageBg})` }}
+        >
+          <div className="character-page-inner">Loading character...</div>
+        </main>
+      );
   }
 
   return (
-    <main className="character-page">
+    <main
+  className="character-page"
+  style={{ backgroundImage: `url(${pageBg})` }}
+>
     <div className="character-page-inner">
         <Link to={`/games/${gameId}`} className="character-back-link">
           ← Back to {gameId.toUpperCase()} roster
@@ -146,8 +226,12 @@ function CharacterPage() {
         <section className="character-hero-layout">
           <div className="character-render-card">
             <div className="character-render-stage">
-              {isVf5 && character.id === 2 ? (
-                <img src={aoiImg} alt={character.name} className="aoi-render" />
+              {isVf5 && vf5CharacterImages[character.id] ? (
+                <img
+                  src={vf5CharacterImages[character.id]}
+                  alt={character.name}
+                  className={`character-render-img ${vf5CharacterClasses[character.id] ?? ""}`}
+                />
               ) : null}
             </div>
 

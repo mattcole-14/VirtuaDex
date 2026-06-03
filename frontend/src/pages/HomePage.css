@@ -1,6 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&display=swap");
+
+
 .home-page {
   min-height: 100vh;
   color: white;
+  font-family: "Rajdhani", sans-serif;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -117,6 +121,7 @@
 .home-title {
   max-width: 940px;
   margin: 0;
+  font-family: "Orbitron", sans-serif;
   font-size: clamp(3rem, 6vw, 6.4rem);
   line-height: 0.95;
   text-transform: uppercase;
@@ -126,7 +131,7 @@
 
 .home-title span {
   color: #ef4444;
-  display: block;
+  display: inline;
 }
 
 .home-description {
