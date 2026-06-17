@@ -70,18 +70,6 @@ const vf5CharacterClasses: Record<number, string> = {
 };
 
 
-const aoiMoveTabs = [
-  { label: "Normal", value: "normal" },
-  { label: "Tenchi In'you", value: "tenchi" },
-  { label: "Sundome", value: "sundome" },
-  { label: "Jump Attacks", value: "jump-attacks" },
-  { label: "Back Attacks", value: "back-attacks" },
-  { label: "Down Attacks", value: "down-attacks" },
-  { label: "Throws", value: "throws" },
-  { label: "Reversals", value: "reversals" },
-  { label: "Rising Attacks", value: "rising-attacks" },
-];
-
 type Character = {
   id: number;
   name: string;
@@ -92,6 +80,7 @@ type Character = {
 type Move = {
   id: number;
   character_id: number;
+  category: string | null;
   input: string | null;
   name: string;
   hit_level: string | null;
@@ -116,7 +105,8 @@ function CharacterPage() {
   const [moves, setMoves] = useState<Move[]>([]);
   const [moveSearch, setMoveSearch] = useState("");
   const [hitLevelFilter, setHitLevelFilter] = useState("");
-  const [activeTab, setActiveTab] = useState("normal");
+  const [activeTab, setActiveTab] = useState("");
+  const [moveTabs, setMoveTabs] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -143,9 +133,7 @@ function CharacterPage() {
         setError("Unable to load character.");
       });
 
-    const movesUrl = isVf5
-      ? `http://127.0.0.1:8000/games/${gameId}/characters/${characterId}/moves/tabs/${activeTab}`
-      : `http://127.0.0.1:8000/games/${gameId}/characters/${characterId}/moves`;
+    const movesUrl = `http://127.0.0.1:8000/games/${gameId}/characters/${characterId}/moves`;
 
     fetch(movesUrl)
       .then((response) => response.json())
@@ -162,7 +150,26 @@ function CharacterPage() {
         console.error("Error fetching moves:", fetchError);
         setError("Unable to load moves.");
       });
-  }, [characterId, activeTab, isVf5]);
+  }, [characterId, isVf5]);
+
+  useEffect(() => {
+    if (!isVf5 || moves.length === 0) {
+      return;
+    }
+
+    const categories = moves.reduce<string[]>((unique, move) => {
+      const category = move.category?.trim() || "Other";
+      if (!unique.includes(category)) {
+        unique.push(category);
+      }
+      return unique;
+    }, []);
+
+    setMoveTabs(categories);
+    if (!categories.includes(activeTab)) {
+      setActiveTab(categories[0] ?? "");
+    }
+  }, [isVf5, moves, activeTab]);
 
   const filteredMoves = moves.filter((move) => {
     const search = moveSearch.trim().toLowerCase();
@@ -179,11 +186,16 @@ function CharacterPage() {
         .toLowerCase()
         .includes(hitLevelFilter.toLowerCase());
 
-    return matchesSearch && matchesHitLevel;
+    const matchesCategory =
+      !isVf5 ||
+      !activeTab ||
+      (move.category?.trim() || "Other") === activeTab;
+
+    return matchesSearch && matchesHitLevel && matchesCategory;
   });
 
   const activeTabLabel = isVf5
-    ? aoiMoveTabs.find((tab) => tab.value === activeTab)?.label ?? "Moves"
+    ? activeTab || "Moves"
     : "Moves";
 
   if (error) {
@@ -254,7 +266,7 @@ function CharacterPage() {
 
           <p className="character-description">
             {isVf5 ? (
-              <>Aoi Umenokoji is a defensive Virtua Fighter character who uses Aiki Jujutsu, reversals, parries, stance transitions, and precise reads to control the opponent. She is built around patience, timing, and punishing predictable attacks rather than overwhelming the opponent with constant pressure.</>
+              <>Browse move data and frame details for {character.name}. More game-specific description content will display as the VF5 roster expands.</>
             ) : (
               <>Browse move data and frame details for {character.name}. More game-specific description content will display when DOA character data is available.</>
             )}
@@ -263,15 +275,15 @@ function CharacterPage() {
       </section>
 
       <section className="move-section">
-        {isVf5 ? (
+        {isVf5 && moveTabs.length > 0 ? (
           <div className="move-tabs">
-            {aoiMoveTabs.map((tab) => (
+            {moveTabs.map((category) => (
               <button
-                key={tab.value}
-                onClick={() => setActiveTab(tab.value)}
-                className={`move-tab ${activeTab === tab.value ? "active" : ""}`}
+                key={category}
+                onClick={() => setActiveTab(category)}
+                className={`move-tab ${activeTab === category ? "active" : ""}`}
               >
-                {tab.label}
+                {category}
               </button>
             ))}
           </div>

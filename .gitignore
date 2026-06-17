@@ -4,18 +4,22 @@ backend/venv/
 # Python cache files
 __pycache__/
 *.pyc
+backend/__pycache__/
 
 # Frontend dependencies
 frontend/node_modules/
 
-# Frontend build output
+# Frontend build/cache output
 frontend/dist/
+frontend/.vite/
 
 # Environment variables / secrets
 .env
 *.env
+.env.local
 
-# VS Code settings - optional
+# IDE files
+.idea/
 .vscode/
 
 # OS files
@@ -25,13 +29,3 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
-
-# Python
-backend/__pycache__/
-backend/*.pyc
-
-# Build/cache
-frontend/.vite/
-
-# Local config
-.env.local

@@ -1,4 +1,4 @@
-JEAN_MOVES = [
+jean_moves = [
     {
         "id": 1,
         "character_id": 3,
@@ -2042,5 +2042,6 @@ JEAN_MOVES = [
         "on_hit": 3,
         "on_counter_hit": 6,
         "notes": '',
-    },
+    },    
 ]
+JEAN_MOVES = jean_moves

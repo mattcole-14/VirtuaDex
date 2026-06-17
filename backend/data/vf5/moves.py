@@ -11,6 +11,7 @@ move_modules = [
     "eileen_moves",
     "goh_moves",
     "jacky_moves",
+    "jean_moves",
     "jeffry_moves",
     "kage_moves",
     "lau_moves",
