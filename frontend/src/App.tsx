@@ -3,6 +3,7 @@ import "./App.css";
 
 import HomePage from "./pages/HomePage";
 import VF5Page from "./pages/VF5Page";
+import DOAPage from "./pages/DOAPage";
 import CharacterPage from "./pages/CharacterPage";
 import ComingSoonPage from "./pages/ComingSoonPage";
 import CharacterDetailPage from "./pages/CharacterDetailPage";
@@ -13,7 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/games/vf5" element={<VF5Page />} />
-        <Route path="/games/doa" element={<ComingSoonPage />} />
+        <Route path="/games/doa" element={<DOAPage />} />
 
         {/* Keep this only as a test page */}
         <Route

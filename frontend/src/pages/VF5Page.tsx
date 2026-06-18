@@ -27,7 +27,7 @@ import lauImg from "../assets/image/vf/lau.png";
 type Character = {
   id: number;
   name: string;
-  style: string;
+  fighting_style: string;
   difficulty: string;
 };
 
@@ -62,9 +62,10 @@ function VF5Page() {
     fetch("http://127.0.0.1:8000/games/vf5/characters")
       .then((response) => response.json())
       .then((data) => setCharacters(data))
-      .catch(() =>
-        setError("Could not load characters. Make sure the backend is running.")
-      );
+      .catch((fetchError) => {
+        console.error("VF5 character fetch failed:", fetchError);
+        setError("Could not load characters. Make sure the backend is running.");
+      });
   }, []);
 
   return (
@@ -103,7 +104,7 @@ function VF5Page() {
 
       <div className="character-card-info">
         <h3>{character.name}</h3>
-        <p>Style: {character.style}</p>
+        <p>Style: {character.fighting_style}</p>
         <p>Difficulty: {character.difficulty}</p>
       </div>
     </Link>
