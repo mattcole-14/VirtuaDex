@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useMatch, useParams } from "react-router-dom";
 import "./CharacterPage.css";
+
+import { vfCharacterProfiles } from "../data/vfCharacterProfiles";
+import InputIcons from "../components/InputIcons";
+
 import akiraImg from "../assets/image/vf/akira.png";
 import aoiImg from "../assets/image/vf/aoi.png";
 import blazeImg from "../assets/image/vf/blaze.png";
@@ -21,10 +25,9 @@ import takaImg from "../assets/image/vf/taka.png";
 import vanessaImg from "../assets/image/vf/vanessa.png";
 import wolfImg from "../assets/image/vf/wolf.png";
 import lauImg from "../assets/image/vf/lau.png";
-import InputIcons from "../components/InputIcons";
+
 import vf5Bg from "../assets/vfchbg.png";
 import doaBg from "../assets/doachbg.png";
-
 
 const gameBackgrounds: Record<string, string> = {
   vf5: vf5Bg,
@@ -69,7 +72,6 @@ const vf5CharacterClasses: Record<number, string> = {
   20: "character-dural",
 };
 
-
 type Character = {
   id: number;
   name: string;
@@ -94,11 +96,44 @@ type Move = {
   notes: string;
 };
 
+function getHitLevelClass(hitLevel: string | null) {
+  const value = hitLevel?.toLowerCase() ?? "";
+
+  if (value.includes("high")) return "high";
+  if (value.includes("middle") || value.includes("mid")) return "mid";
+  if (value.includes("low")) return "low";
+  if (value.includes("throw")) return "throw";
+
+  return "neutral";
+}
+
+function getFrameClass(value: number | string | null) {
+  if (value === null || value === undefined || value === "") {
+    return "";
+  }
+
+  const parsedValue = Number.parseInt(String(value), 10);
+
+  if (Number.isNaN(parsedValue)) return "";
+  if (parsedValue > 0) return "frame-positive";
+  if (parsedValue < 0) return "frame-negative";
+
+  return "frame-neutral";
+}
+
 function CharacterPage() {
   const { characterId } = useParams();
+
   const match = useMatch("/games/:gameId/characters/:characterId");
   const gameId = match?.params.gameId ?? "vf5";
+
   const isVf5 = gameId === "vf5";
+  const numericCharacterId = Number(characterId);
+
+  const vfProfile = isVf5
+    ? vfCharacterProfiles[numericCharacterId]
+    : undefined;
+
   const pageBg = gameBackgrounds[gameId] ?? vf5Bg;
 
   const [character, setCharacter] = useState<Character | null>(null);
@@ -110,16 +145,22 @@ function CharacterPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!characterId) {
-      return;
-    }
+    if (!characterId) return;
 
     setError(null);
     setCharacter(null);
     setMoves([]);
 
-    fetch(`http://127.0.0.1:8000/games/${gameId}/characters/${characterId}`)
-      .then((response) => response.json())
+    fetch(
+      `http://127.0.0.1:8000/games/${gameId}/characters/${characterId}`
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Character request failed.");
+        }
+
+        return response.json();
+      })
       .then((data) => {
         if (data.error) {
           setError(data.error);
@@ -133,10 +174,16 @@ function CharacterPage() {
         setError("Unable to load character.");
       });
 
-    const movesUrl = `http://127.0.0.1:8000/games/${gameId}/characters/${characterId}/moves`;
+    fetch(
+      `http://127.0.0.1:8000/games/${gameId}/characters/${characterId}/moves`
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Moves request failed.");
+        }
 
-    fetch(movesUrl)
-      .then((response) => response.json())
+        return response.json();
+      })
       .then((data) => {
         if (data.error) {
           setError(data.error);
@@ -144,28 +191,32 @@ function CharacterPage() {
           return;
         }
 
-        setMoves(data);
+        setMoves(Array.isArray(data) ? data : []);
       })
       .catch((fetchError) => {
         console.error("Error fetching moves:", fetchError);
         setError("Unable to load moves.");
       });
-  }, [characterId, isVf5]);
+  }, [characterId, gameId]);
 
   useEffect(() => {
     if (!isVf5 || moves.length === 0) {
+      setMoveTabs([]);
       return;
     }
 
     const categories = moves.reduce<string[]>((unique, move) => {
       const category = move.category?.trim() || "Other";
+
       if (!unique.includes(category)) {
         unique.push(category);
       }
+
       return unique;
     }, []);
 
     setMoveTabs(categories);
+
     if (!categories.includes(activeTab)) {
       setActiveTab(categories[0] ?? "");
     }
@@ -177,12 +228,19 @@ function CharacterPage() {
     const matchesSearch =
       search === "" ||
       move.name.toLowerCase().includes(search) ||
-      String(move.hit_level).toLowerCase().includes(search) ||
-      String(move.notes).toLowerCase().includes(search);
+      String(move.input ?? "")
+        .toLowerCase()
+        .includes(search) ||
+      String(move.hit_level ?? "")
+        .toLowerCase()
+        .includes(search) ||
+      String(move.notes ?? "")
+        .toLowerCase()
+        .includes(search);
 
     const matchesHitLevel =
       hitLevelFilter === "" ||
-      String(move.hit_level)
+      String(move.hit_level ?? "")
         .toLowerCase()
         .includes(hitLevelFilter.toLowerCase());
 
@@ -194,20 +252,19 @@ function CharacterPage() {
     return matchesSearch && matchesHitLevel && matchesCategory;
   });
 
-  const activeTabLabel = isVf5
-    ? activeTab || "Moves"
-    : "Moves";
+  const activeTabLabel = isVf5 ? activeTab || "Moves" : "Moves";
 
   if (error) {
     return (
       <main
-  className="character-page"
-  style={{ backgroundImage: `url(${pageBg})` }}
->
+        className={`character-page ${isVf5 ? "vf-character-page" : ""}`}
+        style={{ backgroundImage: `url(${pageBg})` }}
+      >
         <div className="character-page-inner">
           <Link to={`/games/${gameId}`} className="character-back-link">
             ← Back to {gameId.toUpperCase()} roster
           </Link>
+
           <div className="error-message">{error}</div>
         </div>
       </main>
@@ -215,152 +272,392 @@ function CharacterPage() {
   }
 
   if (!character) {
-          return (
-        <main
-          className="character-page"
-          style={{ backgroundImage: `url(${pageBg})` }}
-        >
-          <div className="character-page-inner">Loading character...</div>
-        </main>
-      );
+    return (
+      <main
+        className={`character-page ${isVf5 ? "vf-character-page" : ""}`}
+        style={{ backgroundImage: `url(${pageBg})` }}
+      >
+        <div className="character-page-inner">
+          <p>Loading character...</p>
+        </div>
+      </main>
+    );
   }
 
   return (
     <main
-  className="character-page"
-  style={{ backgroundImage: `url(${pageBg})` }}
->
-    <div className="character-page-inner">
+      className={`character-page ${isVf5 ? "vf-character-page" : ""}`}
+      style={{ backgroundImage: `url(${pageBg})` }}
+    >
+      <div className="character-page-inner">
         <Link to={`/games/${gameId}`} className="character-back-link">
-          ← Back to {gameId.toUpperCase()} roster
+          ← Back to Characters
         </Link>
 
-        <section className="character-hero-layout">
-          <div className="character-render-card">
-            <div className="character-render-stage">
-              {isVf5 && vf5CharacterImages[character.id] ? (
-                <img
-                  src={vf5CharacterImages[character.id]}
-                  alt={character.name}
-                  className={`character-render-img ${vf5CharacterClasses[character.id] ?? ""}`}
-                />
-              ) : null}
-            </div>
+        {isVf5 ? (
+          <>
+            <section className="vf-profile-hero">
+              <div className="vf-profile-render">
+                <div className="character-render-stage">
+                  {vf5CharacterImages[character.id] && (
+                    <img
+                      src={vf5CharacterImages[character.id]}
+                      alt={character.name}
+                      className={`character-render-img ${
+                        vf5CharacterClasses[character.id] ?? ""
+                      }`}
+                    />
+                  )}
+                </div>
+              </div>
 
-            <p className="character-render-label">{character.name}</p>
-          </div>
-        <article className="character-info-card">
-          <p className="character-kicker">Character Profile</p>
+              <div className="vf-profile-info">
+                <p className="vf-profile-game">Virtua Fighter 5</p>
 
-          <h1>{character.name}</h1>
+                <h1>{character.name}</h1>
 
-          <div className="character-meta">
-            <span className="character-pill">
-              Style: {character.fighting_style}
-            </span>
+                <div className="vf-profile-summary">
+                  <div>
+                    <span className="vf-info-label">Fighting Style</span>
+                    <strong>{character.fighting_style}</strong>
+                  </div>
 
-            <span className="character-pill">
-              Difficulty: {character.difficulty}
-            </span>
-          </div>
+                  <div>
+                    <span className="vf-info-label">Difficulty</span>
 
-          <p className="character-description">
-            {isVf5 ? (
-              <>Browse move data and frame details for {character.name}. More game-specific description content will display as the VF5 roster expands.</>
-            ) : (
-              <>Browse move data and frame details for {character.name}. More game-specific description content will display when DOA character data is available.</>
+                    {vfProfile ? (
+                      <>
+                        <div
+                          className="vf-stars"
+                          aria-label={`${vfProfile.difficulty} out of 5 difficulty`}
+                        >
+                          {Array.from({ length: 5 }).map((_, index) => (
+                            <span
+                              key={index}
+                              className={
+                                index < vfProfile.difficulty
+                                  ? "vf-star filled"
+                                  : "vf-star"
+                              }
+                            >
+                              ★
+                            </span>
+                          ))}
+                        </div>
+
+                        <small>{vfProfile.role}</small>
+                      </>
+                    ) : (
+                      <strong>{character.difficulty}</strong>
+                    )}
+                  </div>
+                </div>
+
+                <p className="vf-profile-description">
+                  {vfProfile?.description ??
+                    `Browse move data and frame details for ${character.name}. Additional profile information will be added as the Virtua Fighter roster expands.`}
+                </p>
+
+                {vfProfile && (
+                  <div className="vf-profile-facts">
+                    <div>
+                      <span>Nationality</span>
+                      <strong>{vfProfile.nationality}</strong>
+                    </div>
+
+                    <div>
+                      <span>Birthdate</span>
+                      <strong>{vfProfile.birthdate}</strong>
+                    </div>
+
+                    <div>
+                      <span>Height / Weight</span>
+                      <strong>{vfProfile.heightWeight}</strong>
+                    </div>
+
+                    <div>
+                      <span>Blood Type</span>
+                      <strong>{vfProfile.bloodType}</strong>
+                    </div>
+
+                    <div>
+                      <span>Debut</span>
+                      <strong>{vfProfile.debut}</strong>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
+
+            {vfProfile && (
+              <section className="vf-appearances">
+                <div className="vf-section-title">
+                  <p>Character History</p>
+                  <h2>Game Appearances</h2>
+                </div>
+
+                <div className="vf-appearance-grid">
+                  {vfProfile.appearances.map((appearance) => (
+                    <article
+                      className="vf-appearance-card"
+                      key={`${appearance.title}-${appearance.year}`}
+                    >
+                      <div className="vf-appearance-image">
+                        <img
+                          src={appearance.logo}
+                          alt={`${appearance.title} logo`}
+                        />
+                      </div>
+
+                      <h3>{appearance.title}</h3>
+                      <p>{appearance.year}</p>
+                    </article>
+                  ))}
+                </div>
+              </section>
             )}
-          </p>
-        </article>
-      </section>
 
-      <section className="move-section">
-        {isVf5 && moveTabs.length > 0 ? (
-          <div className="move-tabs">
-            {moveTabs.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveTab(category)}
-                className={`move-tab ${activeTab === category ? "active" : ""}`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        ) : null}
-
-        <h2 className="move-heading">{activeTabLabel}</h2>
-
-        <p className="move-subtitle">
-          Browse {character.name}&apos;s {activeTabLabel.toLowerCase()} moves.
-        </p>
-
-        <div className="move-controls">
-          <input
-            type="text"
-            placeholder="Search moves..."
-            value={moveSearch}
-            onChange={(event) => setMoveSearch(event.target.value)}
-          />
-
-          <select
-            value={hitLevelFilter}
-            onChange={(event) => setHitLevelFilter(event.target.value)}
-          >
-            <option value="">All hit levels</option>
-            <option value="High">High</option>
-            <option value="Middle">Middle</option>
-            <option value="Low">Low</option>
-            <option value="Special Low">Special Low</option>
-            <option value="Throw">Throw</option>
-          </select>
-        </div>
-
-        <div className="move-table-wrap">
-          <table className="move-table">
-            <thead>
-              <tr>
-                <th>Move</th>
-                <th>Input</th>
-                <th>Level</th>
-                <th>Damage</th>
-                <th>Startup</th>
-                <th>Block</th>
-                <th>Hit</th>
-                <th>Counter Hit</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {filteredMoves.length === 0 ? (
-                <tr>
-                  <td colSpan={8} className="empty-row">
-                    No moves found for this tab yet.
-                  </td>
-                </tr>
-              ) : (
-                filteredMoves.map((move) => (
-                  <tr key={move.id}>
-                    <td>{move.name}</td>
-                    <td>
-                      <InputIcons input={move.input ?? ""} />
-                    </td>
-                    <td>{move.hit_level ?? "-"}</td>
-                    <td>{move.damage ?? "-"}</td>
-                    <td>{move.startup_frames ?? "-"}</td>
-                    <td>{move.on_block ?? "-"}</td>
-                    <td>{move.on_hit ?? "-"}</td>
-                    <td>{move.on_counter_hit ?? "-"}</td>
-                  </tr>
-                ))
+            <section className="vf-moves-panel">
+              {moveTabs.length > 0 && (
+                <div className="vf-category-tabs" role="tablist">
+                  {moveTabs.map((category) => (
+                    <button
+                      key={category}
+                      type="button"
+                      role="tab"
+                      aria-selected={activeTab === category}
+                      onClick={() => setActiveTab(category)}
+                      className={`vf-category-tab ${
+                        activeTab === category ? "active" : ""
+                      }`}
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
               )}
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
-  </main>
-);
+
+              <div className="vf-move-heading-row">
+                <div>
+                  <h2>{activeTabLabel}</h2>
+
+                  <p>
+                    Browse {character.name}&apos;s{" "}
+                    {activeTabLabel.toLowerCase()} moves.
+                  </p>
+                </div>
+
+                <span className="vf-move-count">
+                  {filteredMoves.length}{" "}
+                  {filteredMoves.length === 1 ? "move" : "moves"}
+                </span>
+              </div>
+
+              <div className="vf-move-controls">
+                <input
+                  type="search"
+                  placeholder="Search moves, inputs, or notes..."
+                  value={moveSearch}
+                  onChange={(event) => setMoveSearch(event.target.value)}
+                />
+
+                <select
+                  value={hitLevelFilter}
+                  onChange={(event) =>
+                    setHitLevelFilter(event.target.value)
+                  }
+                >
+                  <option value="">All hit levels</option>
+                  <option value="High">High</option>
+                  <option value="Middle">Middle</option>
+                  <option value="Low">Low</option>
+                  <option value="Special Low">Special Low</option>
+                  <option value="Throw">Throw</option>
+                </select>
+              </div>
+
+              <div className="vf-table-wrap">
+                <table className="vf-move-table">
+                  <thead>
+                    <tr>
+                      <th>Move</th>
+                      <th>Input</th>
+                      <th>Hit Level</th>
+                      <th>Damage</th>
+                      <th>Startup</th>
+                      <th>On Block</th>
+                      <th>On Hit</th>
+                      <th>Counter Hit</th>
+                      <th>Notes</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {filteredMoves.length === 0 ? (
+                      <tr>
+                        <td colSpan={9} className="empty-row">
+                          No moves found for this category.
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredMoves.map((move) => (
+                        <tr key={move.id}>
+                          <td className="move-name-cell">{move.name}</td>
+
+                          <td className="move-input-cell">
+                            <InputIcons input={move.input ?? ""} />
+                          </td>
+
+                          <td>
+                            <span
+                              className={`hit-level-badge ${getHitLevelClass(
+                                move.hit_level
+                              )}`}
+                            >
+                              {move.hit_level ?? "—"}
+                            </span>
+                          </td>
+
+                          <td>{move.damage ?? "—"}</td>
+
+                          <td>{move.startup_frames ?? "—"}</td>
+
+                          <td className={getFrameClass(move.on_block)}>
+                            {move.on_block ?? "—"}
+                          </td>
+
+                          <td className={getFrameClass(move.on_hit)}>
+                            {move.on_hit ?? "—"}
+                          </td>
+
+                          <td
+                            className={getFrameClass(move.on_counter_hit)}
+                          >
+                            {move.on_counter_hit ?? "—"}
+                          </td>
+
+                          <td className="move-notes-cell">
+                            {move.notes || "—"}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </>
+        ) : (
+          <>
+            <section className="character-hero-layout">
+              <div className="character-render-card">
+                <div className="character-render-stage" />
+
+                <p className="character-render-label">{character.name}</p>
+              </div>
+
+              <article className="character-info-card">
+                <p className="character-kicker">Character Profile</p>
+
+                <h1>{character.name}</h1>
+
+                <div className="character-meta">
+                  <span className="character-pill">
+                    Style: {character.fighting_style}
+                  </span>
+
+                  <span className="character-pill">
+                    Difficulty: {character.difficulty}
+                  </span>
+                </div>
+
+                <p className="character-description">
+                  Browse move data and frame details for {character.name}.
+                  Additional game-specific profile information will be added as
+                  the roster expands.
+                </p>
+              </article>
+            </section>
+
+            <section className="move-section">
+              <h2 className="move-heading">Moves</h2>
+
+              <p className="move-subtitle">
+                Browse {character.name}&apos;s moves.
+              </p>
+
+              <div className="move-controls">
+                <input
+                  type="search"
+                  placeholder="Search moves..."
+                  value={moveSearch}
+                  onChange={(event) => setMoveSearch(event.target.value)}
+                />
+
+                <select
+                  value={hitLevelFilter}
+                  onChange={(event) =>
+                    setHitLevelFilter(event.target.value)
+                  }
+                >
+                  <option value="">All hit levels</option>
+                  <option value="High">High</option>
+                  <option value="Middle">Middle</option>
+                  <option value="Low">Low</option>
+                  <option value="Special Low">Special Low</option>
+                  <option value="Throw">Throw</option>
+                </select>
+              </div>
+
+              <div className="move-table-wrap">
+                <table className="move-table">
+                  <thead>
+                    <tr>
+                      <th>Move</th>
+                      <th>Input</th>
+                      <th>Level</th>
+                      <th>Damage</th>
+                      <th>Startup</th>
+                      <th>Block</th>
+                      <th>Hit</th>
+                      <th>Counter Hit</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {filteredMoves.length === 0 ? (
+                      <tr>
+                        <td colSpan={8} className="empty-row">
+                          No moves found.
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredMoves.map((move) => (
+                        <tr key={move.id}>
+                          <td>{move.name}</td>
+
+                          <td>
+                            <InputIcons input={move.input ?? ""} />
+                          </td>
+
+                          <td>{move.hit_level ?? "—"}</td>
+                          <td>{move.damage ?? "—"}</td>
+                          <td>{move.startup_frames ?? "—"}</td>
+                          <td>{move.on_block ?? "—"}</td>
+                          <td>{move.on_hit ?? "—"}</td>
+                          <td>{move.on_counter_hit ?? "—"}</td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </>
+        )}
+      </div>
+    </main>
+  );
 }
 
 export default CharacterPage;
