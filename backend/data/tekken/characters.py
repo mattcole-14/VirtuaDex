@@ -123,7 +123,7 @@ TEKKEN_CHARACTERS = [
         "name": 'Emilie de Rochefort',
         "fighting_style": 'Street Fighting',
         "difficulty": 'Intermediate',
-        "image_url": None,
+        "image_url": '/images/tekken/lili.png',
     },
     {
         "id": 19,
