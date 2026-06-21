@@ -8,6 +8,8 @@ from data.doa.moves import DOA_MOVES
 from data.vf5.combos import vf5_combos
 from data.vf5.moves import vf5_moves
 from data.vf5.characters import characters
+from data.tekken.characters import TEKKEN_CHARACTERS
+from data.tekken.moves import tekken_moves
 from data.vf5.aoi_moves import (
     aoi_normal_moves,
     aoi_tenchi_moves,
@@ -30,8 +32,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-all_characters = [*characters, *doa_characters]
-all_moves = [*vf5_moves, *DOA_MOVES]
+all_characters = [*characters, *doa_characters, *TEKKEN_CHARACTERS]
+all_moves = [*vf5_moves, *DOA_MOVES, *tekken_moves]
 
 aoi_move_tabs = {
     "normal": aoi_normal_moves,
@@ -67,6 +69,8 @@ def get_characters_by_game(game_id: str):
         return characters
     if gid == "doa":
         return doa_characters
+    if gid == "tekken":
+        return TEKKEN_CHARACTERS
     return {"error": "Game not found"}
 
 
@@ -78,6 +82,8 @@ def get_character_by_game(game_id: str, character_id: int):
         source = characters
     elif gid == "doa":
         source = doa_characters
+    elif gid == "tekken":
+        source = TEKKEN_CHARACTERS
     else:
         return {"error": "Game not found"}
 
@@ -95,6 +101,8 @@ def get_character_moves_by_game(game_id: str, character_id: int):
         moves_source = vf5_moves
     elif gid == "doa":
         moves_source = DOA_MOVES
+    elif gid == "tekken":
+        moves_source = tekken_moves
     else:
         return {"error": "Game not found"}
 

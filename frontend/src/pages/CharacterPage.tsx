@@ -28,6 +28,7 @@ import lauImg from "../assets/image/vf/lau.png";
 
 import vf5Bg from "../assets/vfchbg.png";
 import doaBg from "../assets/doachbg.png";
+import ComingSoonPage from "./ComingSoonPage";
 
 const gameBackgrounds: Record<string, string> = {
   vf5: vf5Bg,
@@ -126,6 +127,13 @@ function CharacterPage() {
 
   const match = useMatch("/games/:gameId/characters/:characterId");
   const gameId = match?.params.gameId ?? "vf5";
+
+  const availableGames = ["vf5", "doa"];
+  const isAvailable = availableGames.includes(gameId ?? "");
+
+  if (!isAvailable) {
+    return <ComingSoonPage />;
+  }
 
   const isVf5 = gameId === "vf5";
   const numericCharacterId = Number(characterId);
