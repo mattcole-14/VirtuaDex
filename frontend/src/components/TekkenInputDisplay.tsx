@@ -1,5 +1,8 @@
-import { tekkenInputIcons } from "../utils/tekkenInputIcons";
-import { tokenizeTekkenInput, normalizeTekkenInput } from "../utils/parseTekkenInput";
+import { tekkenInputIcons } from "../assets/game-inputs/tkinputs/tekkenInputIcons";
+import {
+  tokenizeTekkenInput,
+  normalizeTekkenInput,
+} from "../assets/game-inputs/tkinputs/parseTekkenInput";
 import "./TekkenInputDisplay.css";
 
 type TekkenInputDisplayProps = {
