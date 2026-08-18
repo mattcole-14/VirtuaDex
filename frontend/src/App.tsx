@@ -4,6 +4,7 @@ import "./App.css";
 import HomePage from "./pages/HomePage";
 import VF5Page from "./pages/VF5Page";
 import DOAPage from "./pages/DOAPage";
+import TEKKENPage from "./pages/TEKKENPage";
 import CharacterPage from "./pages/CharacterPage";
 import ComingSoonPage from "./pages/ComingSoonPage";
 import CharacterDetailPage from "./pages/CharacterDetailPage";
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/games/vf5" element={<VF5Page />} />
         <Route path="/games/doa" element={<DOAPage />} />
+        <Route path="/games/tekken" element={<TEKKENPage />} />
 
         {/* Keep this only as a test page */}
         <Route

@@ -128,7 +128,7 @@ function CharacterPage() {
   const match = useMatch("/games/:gameId/characters/:characterId");
   const gameId = match?.params.gameId ?? "vf5";
 
-  const availableGames = ["vf5", "doa"];
+  const availableGames = ["vf5", "doa", "tekken"];
   const isAvailable = availableGames.includes(gameId ?? "");
 
   if (!isAvailable) {

@@ -94,13 +94,15 @@ function VF5Page() {
       to={`/games/vf5/characters/${character.id}`}
       className="character-card"
     >
-      {characterImages[character.id] && (
-        <img
-          src={characterImages[character.id]}
-          alt={`${character.name}`}
-          className="character-card-img"
-        />
-      )}
+      <div className="character-card-image-wrap">
+        {characterImages[character.id] && (
+          <img
+            src={characterImages[character.id]}
+            alt={`${character.name}`}
+            className="character-card-image"
+          />
+        )}
+      </div>
 
       <div className="character-card-info">
         <h3>{character.name}</h3>

@@ -22,7 +22,7 @@ const games = [
     title: "Tekken",
     logo: tekkenLogo,
     subtitle: "Movement, launchers, wall pressure, and explosive offense.",
-    status: "Coming Soon",
+    status: "Available",
     path: "/games/tekken",
   },
   {
@@ -30,7 +30,7 @@ const games = [
     title: "Dead or Alive",
     logo: doaLogo,
     subtitle: "Fast strikes, holds, throws, and momentum-based 3D combat.",
-    status: "Coming Soon",
+    status: "Available",
     path: "/games/doa",
   },
   {
